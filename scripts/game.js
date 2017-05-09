@@ -1,16 +1,19 @@
     const player = {
         name: '',
         score: 0,
-        totalScore: 0,
+        totalTime: '',
+        totalError: '',
         time: ''
-    }
+    };
 
     let countdown;
-
+    let clearDisplay;
     const timeToFinish = document.querySelector('.game__score--timer');
     const scoreDisplay = document.querySelector('.game__score--number');
     const levelDisplay = document.querySelector('.game__level--number');
     const startBtn = document.querySelector('.game__window--start');
+    const wrongDisplay = document.querySelector('.game__score--wrong');
+
     // Obrazy nut
     var notes = Array.prototype.slice.call(document.querySelectorAll('.game__window img'));
     var notesSecond = Array.prototype.slice.call(document.querySelectorAll('.game__window--secondLevel img'));
@@ -86,8 +89,8 @@
 
         function checkAnswer(e) {
             if (e.toElement.innerText == correctButton.innerText) {
-                document.querySelector('.game__score--wrong').textContent = "Brawo!";
-                setTimeout(clear, 500);
+                wrongDisplay.textContent = "Brawo!";
+                clearDisplay = setTimeout(clear, 500);
                 player.score++;
                 scoreDisplay.innerHTML = player.score;
                 notes = Array.prototype.slice.call(document.querySelectorAll('.game__window img'));
@@ -98,7 +101,8 @@
 
 
             } else {
-                document.querySelector('.game__score--wrong').textContent = "Spróbuj jeszcze raz";
+                wrongDisplay.textContent = "Spróbuj jeszcze raz";
+                player.totalError++;
             }
         }
 
@@ -107,12 +111,12 @@
         Array.prototype.slice.call(document.querySelectorAll('.game__buttons button')).forEach(button => button.addEventListener('click', checkAnswer));
 
     }
-    var clear = function bravoClear() {
-        document.querySelector('.game__score--wrong').textContent = "";
+    var clear = function() {
+        wrongDisplay.textContent = "";
     };
 
     function checkLevel() {
-        if (player.score >= 10 && player.time > 0) {
+        if (player.score > 9 && player.time > 0) {
 
 
             Array.prototype.slice.call(document.querySelectorAll('.game__buttons button')).forEach(button => button.textContent = "");
@@ -120,11 +124,12 @@
             clearInterval(countdown);
             startBtn.textContent = "Przejdź do poziomu 2";
             startBtn.style.display = "block";
-            document.querySelector('.game__window--start').removeEventListener('click', newGame);
-            document.querySelector('.game__window--start').addEventListener('click', secondLevelStart);
+            removeStartListener();
+            startBtn.addEventListener('click', secondLevelStart);
 
-        } else if (player.score < 10 && player.time > 0) {
-            console.log(player.time)
+        } else if (player.score <= 9 && player.time > 0) {
+            sounds.forEach(sound => sound.pause());
+            sounds.forEach(sound => sound.currentTime = 0);
             pickCorrect();
         } else {
             setNewTime();
@@ -145,10 +150,11 @@
     }
 
     function secondLevelStart() {
-        document.querySelector('.game__window--start').style.display = "none";
+        startBtn.style.display = "none";
         document.querySelector('.game__window').style.display = "none";
         document.querySelector('.game__window--secondLevel').style.display = "flex";
-        player.time = '';
+        player.totalTime = player.time;
+
         player.score = 10;
         scoreDisplay.textContent = player.score;
         levelDisplay.textContent = '2';
@@ -159,7 +165,7 @@
         secondLevel();
     }
 
-    document.querySelector('.game__window--start').addEventListener('click', newGame);
+    startBtn.addEventListener('click', newGame);
 
     function secondLevel() {
         let correctNote = randomNoteSecond();
@@ -206,17 +212,19 @@
 
         function checkAnswer(e) {
             if (e.toElement.innerText == correctButton.innerText) {
-                document.querySelector('.game__score--wrong').textContent = "Brawo!";
-                setTimeout(clear, 500);
+                wrongDisplay.textContent = "Brawo!";
+                clearDisplay = setTimeout(clear, 500);
                 player.score++;
                 scoreDisplay.innerHTML = player.score;
                 notesSecond = Array.prototype.slice.call(document.querySelectorAll('.game__window--secondLevel img'));
                 buttons = Array.prototype.slice.call(document.querySelectorAll('.game__buttons button'));
                 Array.prototype.slice.call(document.querySelectorAll('.game__buttons button')).forEach(button => button.removeEventListener('click', checkAnswer));
+
                 checkSecondLevel();
 
             } else {
-                document.querySelector('.game__score--wrong').textContent = "Spróbuj jeszcze raz";
+                wrongDisplay.textContent = "Spróbuj jeszcze raz";
+                player.totalError++;
             }
         }
 
@@ -225,20 +233,42 @@
 
     function checkSecondLevel() {
         if (player.score > 49 && player.time > 0) {
-            scoreDisplay.innerHTML = "Wygrana!";
-
+            scoreDisplay.innerHTML = "50";
             notes.forEach(img => img.style.display = "none");
             buttons.forEach(button => button.innerHTML = "");
             clearInterval(countdown);
+            clearTimeout(clearDisplay);
+            player.totalTime = 105 - (player.totalTime + player.time);
+
             document.querySelector('.game__window').style.display = "flex";
             document.querySelector('.game__window--secondLevel').style.display = "none";
+            var succes = function() {
+                startBtn.textContent = "Zagraj jeszcze raz";
+                wrongDisplay.textContent = "";
+            };
 
-            let startBtn = document.querySelector('.game__window--start');
-            startBtn.removeEventListener('click', secondLevelStart);
-            startBtn.innerHTML = "Zagraj jeszcze raz";
+            removeStartListener();
             startBtn.style.display = "block";
+            startBtn.innerHTML = "Wygrana!";
+            console.log(player.totalError);
+            // tutaj trzeba:
+            // dodać imię gracza
+            // stworzyć nową pozycję listy wygranych
+            // dodać imię do listy wygranych
+            // dodać totalTime
+            // dodać totalError
+            // posortować
+            // ponumerować
+            // wyświetlić
+
+            totalTimeDisplay(player.totalTime);
+
+            setTimeout(succes, 5000);
+
             startBtn.addEventListener('click', newGame);
-        } else if (player.score <= 49 && player.time > 0) {
+        } else if (player.score <= 49 && player.score >= 10 && player.time > 0) {
+            soundsSecond.forEach(sound => sound.pause());
+            soundsSecond.forEach(sound => sound.currentTime = 0);
             secondLevel();
         } else {
             notes.forEach(img => img.style.display = "none");
@@ -246,8 +276,8 @@
             buttons.forEach(button => button.innerHTML = "");
             document.querySelector('.game__window').style.display = "flex";
             document.querySelector('.game__window--secondLevel').style.display = "none";
-            let startBtn = document.querySelector('.game__window--start');
-            startBtn.removeEventListener('click', newGame);
+
+            removeStartListener();
             startBtn.innerHTML = "Zagraj jeszcze raz";
             startBtn.style.display = "block";
             startBtn.addEventListener('click', secondLevelOnceMore);
@@ -280,9 +310,8 @@
         buttons = Array.prototype.slice.call(document.querySelectorAll('.game__buttons button'));
         buttons.forEach(button => button.textContent = "");
         player.score = '';
-        document.querySelector('.game__score--wrong').textContent = "";
-        player.time = '';
-        let startBtn = document.querySelector('.game__window--start');
+        wrongDisplay.textContent = "";
+        removeStartListener();
         startBtn.innerHTML = "Zagraj jeszcze raz";
         startBtn.style.display = "block";
         startBtn.addEventListener('click', newGame);
@@ -295,9 +324,8 @@
         buttons = Array.prototype.slice.call(document.querySelectorAll('.game__buttons button'));
         buttons.forEach(button => button.textContent = "");
         player.score = 10;
-        document.querySelector('.game__score--wrong').textContent = "";
-        player.time = '';
-        let startBtn = document.querySelector('.game__window--start');
+        wrongDisplay.textContent = "";
+        removeStartListener();
         startBtn.innerHTML = "Zagraj jeszcze raz";
         startBtn.style.display = "block";
         startBtn.addEventListener('click', secondLevelStart);
@@ -311,4 +339,22 @@
         const timerDisplay = `${minutes}:${restSeconds < 10 ? '0' : ''}${restSeconds}`;
 
         timeToFinish.textContent = timerDisplay;
+    }
+
+    function totalTimeDisplay(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const restSeconds = seconds % 60;
+        const timerDisplay = `${minutes}:${restSeconds < 10 ? '0' : ''}${restSeconds}`;
+
+        wrongDisplay.textContent = `Twój czas: ${timerDisplay}`;
+    }
+
+    function removeStartListener() {
+        startBtn.removeEventListener('click', newGame);
+        startBtn.removeEventListener('click', secondLevelStart);
+    }
+
+    function playerName() {
+        var name = prompt("Twoje imię", '');
+        player.name = name;
     }
