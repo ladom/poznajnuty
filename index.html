@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <title>Gra Poznaj Nuty</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="styles/reset.css">
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+</head>
+
+<body>
+    <div class="container game">
+        <div class="game__window">
+            <button class="game__window--start">Nowa gra</button>
+            <img src="pictures/soundG.png" id="soundG" name="G" data-name="G" class="game__window--img">
+            <audio data-name="G">
+                <source src="sounds/mp3/G.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundD1.png" id="soundD1" name="D" data-name="D1" class="game__window--img">
+            <audio data-name="D1">
+                <source src="sounds/mp3/D1.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundA1.png" id="soundA1" name="A" data-name="A1" class="game__window--img">
+            <audio data-name="A1">
+                <source src="sounds/mp3/A1.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundE2.png" id="soundE2" name="E" data-name="E2" class="game__window--img">
+            <audio data-name="E2">
+                <source src="sounds/mp3/E2.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="game__window--secondLevel">
+            <img src="pictures/soundG.png" id="soundG" name="G" data-name="G" class="game__window--img">
+            <audio data-name="G">
+                <source src="sounds/mp3/G.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundA.png" id="soundA" name="A" data-name="A" class="game__window--img">
+            <audio data-name="A">
+                <source src="sounds/mp3/A.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundH.png" id="soundH" name="H" data-name="H" class="game__window--img">
+            <audio data-name="H">
+                <source src="sounds/mp3/H.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundC1.png" id="soundC1" name="C" data-name="C1" class="game__window--img">
+            <audio data-name="C1">
+                <source src="sounds/mp3/C1.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundD1.png" id="soundD1" name="D" data-name="D1" class="game__window--img">
+            <audio data-name="D1">
+                <source src="sounds/mp3/D1.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundE1.png" id="soundE1" name="E" data-name="E1" class="game__window--img">
+            <audio data-name="E1">
+                <source src="sounds/mp3/E1.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundFis1.png" id="soundFis1" name="Fis" data-name="Fis1" class="game__window--img">
+            <audio data-name="Fis1">
+                <source src="sounds/mp3/Fis1.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundG1.png" id="soundG1" name="G" data-name="G1" class="game__window--img">
+            <audio data-name="G1">
+                <source src="sounds/mp3/G1.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundA1.png" id="soundA1" name="A" data-name="A1" class="game__window--img">
+            <audio data-name="A1">
+                <source src="sounds/mp3/A1.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundH1.png" id="soundH1" name="H" data-name="H1" class="game__window--img">
+            <audio data-name="H1">
+                <source src="sounds/mp3/H1.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundC2.png" id="soundC2" name="C" data-name="C2" class="game__window--img">
+            <audio data-name="C2">
+                <source src="sounds/mp3/C2.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundD2.png" id="soundD2" name="D" data-name="D2" class="game__window--img">
+            <audio data-name="D2">
+                <source src="sounds/mp3/D2.mp3" type="audio/mpeg">
+            </audio>
+            <img src="pictures/soundE2.png" id="soundE2" name="E" data-name="E2" class="game__window--img">
+            <audio data-name="E2">
+                <source src="sounds/mp3/E2.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+    </div>
+    <div class="game__score--wrong"></div>
+    <div class="container game__buttons">
+        <button id="btn1"></button>
+        <button id="btn2"></button>
+        <button id="btn3"></button>
+    </div>
+    <div class="container game__score">
+        <div class="game__level">
+            <p class="game__level--describe">Poziom:
+                <span class="game__level--number"></span>
+            </p>
+        </div>
+        <div class="game__score--container">
+            <p class="game__score--describe">Wynik:
+                <span class="game__score--number"></span>
+            </p>
+        </div>
+        <div class="game__score--container">
+            <div class="game__score--timerBox">
+                <p class="game__score--timer"></p>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="scripts/script.js"></script>
+</body>
+
+</html>

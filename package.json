@@ -1,0 +1,23 @@
+{
+  "name": "poznajnuty",
+  "version": "1.0.0",
+  "description": "Gra do nauki nut",
+  "main": "index.js",
+  "dependencies": {
+    "gulp": "^3.9.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ladom/poznajnuty.git"
+  },
+  "author": "Andrzej Ładomirski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ladom/poznajnuty/issues"
+  },
+  "homepage": "https://github.com/ladom/poznajnuty#readme"
+}
