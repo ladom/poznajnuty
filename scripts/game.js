@@ -81,7 +81,7 @@
 
         buttons[0].innerHTML = `${secondButtonText}`;
         buttons[1].innerHTML = `${thirdButtonText}`;
-        correctSound();
+        setTimeout(correctSound, 100);
 
 
         function checkAnswer(e) {

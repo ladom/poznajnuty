@@ -85,7 +85,7 @@ function pickCorrect() {
 
     buttons[0].innerHTML = '' + secondButtonText;
     buttons[1].innerHTML = '' + thirdButtonText;
-    correctSound();
+    setTimeout(correctSound, 100);
 
     function checkAnswer(e) {
         if (e.toElement.innerText == correctButton.innerText) {
