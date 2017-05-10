@@ -6,6 +6,8 @@
         time: ''
     };
 
+    let timeRecords = [];
+    const winnerList = document.querySelector('.game__totalScore--list');
     let countdown;
     let clearDisplay;
     const timeToFinish = document.querySelector('.game__score--timer');
@@ -139,10 +141,12 @@
 
     function newGame() {
         document.querySelector('.game__window--start').style.display = "none";
+        removeStartListener();
         notes = Array.prototype.slice.call(document.querySelectorAll('.game__window img'));
         buttons = Array.prototype.slice.call(document.querySelectorAll('.game__buttons button'));
         player.score = 0;
         player.time = '';
+        player.totalError = '';
         scoreDisplay.innerHTML = "0";
         levelDisplay.textContent = '1';
         timer(35);
@@ -239,27 +243,18 @@
             clearInterval(countdown);
             clearTimeout(clearDisplay);
             player.totalTime = 105 - (player.totalTime + player.time);
-
+            timeRecords.push(player.totalTime);
             document.querySelector('.game__window').style.display = "flex";
             document.querySelector('.game__window--secondLevel').style.display = "none";
             var succes = function() {
                 startBtn.textContent = "Zagraj jeszcze raz";
                 wrongDisplay.textContent = "";
             };
-
+            showBestTime();
             removeStartListener();
             startBtn.style.display = "block";
             startBtn.innerHTML = "Wygrana!";
-            console.log(player.totalError);
-            // tutaj trzeba:
-            // dodać imię gracza
-            // stworzyć nową pozycję listy wygranych
-            // dodać imię do listy wygranych
-            // dodać totalTime
-            // dodać totalError
-            // posortować
-            // ponumerować
-            // wyświetlić
+
 
             totalTimeDisplay(player.totalTime);
 
@@ -284,6 +279,14 @@
         }
     }
 
+    function showBestTime() {
+        winnerList.removeChild(winnerList.childNodes[0]);
+        let listItem = document.createElement('LI');
+        let bestTime = Math.min(...timeRecords);
+        let date = new Date();
+        listItem.textContent = `Twój najlepszy czas: ${countTime(bestTime)}`;
+        winnerList.appendChild(listItem);
+    }
 
 
     function timer(seconds) {
@@ -310,6 +313,7 @@
         buttons = Array.prototype.slice.call(document.querySelectorAll('.game__buttons button'));
         buttons.forEach(button => button.textContent = "");
         player.score = '';
+        player.totalError = '';
         wrongDisplay.textContent = "";
         removeStartListener();
         startBtn.innerHTML = "Zagraj jeszcze raz";
@@ -324,34 +328,34 @@
         buttons = Array.prototype.slice.call(document.querySelectorAll('.game__buttons button'));
         buttons.forEach(button => button.textContent = "");
         player.score = 10;
+        player.totalError = '';
         wrongDisplay.textContent = "";
-        removeStartListener();
         startBtn.innerHTML = "Zagraj jeszcze raz";
         startBtn.style.display = "block";
+        removeStartListener();
         startBtn.addEventListener('click', secondLevelStart);
+
     }
 
-
-
-    function displayTimer(seconds) {
+    function countTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const restSeconds = seconds % 60;
         const timerDisplay = `${minutes}:${restSeconds < 10 ? '0' : ''}${restSeconds}`;
+        return timerDisplay;
+    }
 
-        timeToFinish.textContent = timerDisplay;
+    function displayTimer(seconds) {
+        timeToFinish.textContent = countTime(seconds);
     }
 
     function totalTimeDisplay(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const restSeconds = seconds % 60;
-        const timerDisplay = `${minutes}:${restSeconds < 10 ? '0' : ''}${restSeconds}`;
-
-        wrongDisplay.textContent = `Twój czas: ${timerDisplay}`;
+        wrongDisplay.textContent = `Twój czas: ${countTime(seconds)}`;
     }
 
     function removeStartListener() {
         startBtn.removeEventListener('click', newGame);
         startBtn.removeEventListener('click', secondLevelStart);
+        startBtn.removeEventListener('click', secondLevelOnceMore);
     }
 
     function playerName() {

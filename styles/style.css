@@ -70,7 +70,7 @@
   height: 150px;
   background-color: #4e7a08;
   color: #fff;
-  font-size: 50px;
+  font-size: 40px;
   font-family: "Dosis", sans-serif;
   outline: none;
   border: 4px outset #308e16;
@@ -80,7 +80,7 @@
 
 .game__window--start:active {
   border: 4px inset #308e16;
-  font-size: 49px;
+  font-size: 39px;
 }
 
 @media (max-width: 600px) {
@@ -176,6 +176,7 @@
 .game__score--container {
   width: 50vw;
   float: left;
+  margin-bottom: 15px;
 }
 
 .game__score--timerBox {
@@ -189,5 +190,22 @@
   .game__score--timerBox {
     margin-right: 10px;
     width: 80px;
+  }
+}
+
+.game__totalScore {
+  clear: both;
+  font-family: "Dosis", sans-serif;
+  font-size: 24px;
+  color: #00f;
+  max-width: 1200px;
+  margin: 50px;
+  text-shadow: 2px 2px 4px #308e16;
+}
+
+@media (max-width: 600px) {
+  .game__totalScore {
+    margin-left: 10px;
+    font-size: 20px;
   }
 }

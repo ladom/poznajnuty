@@ -46,7 +46,7 @@
 	height: 150px
 	background-color: $newGame
 	color: $white
-	font-size: 50px
+	font-size: 40px
 	font-family: $dosis
 	outline: none
 	border: 4px outset $btnBorder
@@ -55,7 +55,7 @@
 
 	&:active
 		border: 4px inset $btnBorder
-		font-size: 49px
+		font-size: 39px
 
 	@media (max-width: 600px)
 		width: 60%
@@ -130,6 +130,7 @@
 .game__score--container
 	width: 50vw
 	float: left
+	margin-bottom: 15px
 
 .game__score--timerBox
 	width: 100px
@@ -145,3 +146,20 @@
 
 .game__level
 	@extend .game__score--describe
+
+.game__totalScore
+	clear: both
+	font-family: $dosis
+	font-size: 24px
+	color: $score
+	max-width: 1200px
+	margin: 50px
+	text-shadow: 2px 2px 4px $btnBorder
+	
+	@media (max-width: 600px)
+		margin-left: 10px
+		font-size: 20px
+
+	
+	
+	

@@ -8,6 +8,8 @@ var player = {
     time: ''
 };
 
+var timeRecords = [];
+var winnerList = document.querySelector('.game__totalScore--list');
 var countdown = void 0;
 var clearDisplay = void 0;
 var timeToFinish = document.querySelector('.game__score--timer');
@@ -146,10 +148,12 @@ function checkLevel() {
 
 function newGame() {
     document.querySelector('.game__window--start').style.display = "none";
+    removeStartListener();
     notes = Array.prototype.slice.call(document.querySelectorAll('.game__window img'));
     buttons = Array.prototype.slice.call(document.querySelectorAll('.game__buttons button'));
     player.score = 0;
     player.time = '';
+    player.totalError = '';
     scoreDisplay.innerHTML = "0";
     levelDisplay.textContent = '1';
     timer(35);
@@ -255,27 +259,17 @@ function checkSecondLevel() {
         clearInterval(countdown);
         clearTimeout(clearDisplay);
         player.totalTime = 105 - (player.totalTime + player.time);
-
+        timeRecords.push(player.totalTime);
         document.querySelector('.game__window').style.display = "flex";
         document.querySelector('.game__window--secondLevel').style.display = "none";
         var succes = function succes() {
             startBtn.textContent = "Zagraj jeszcze raz";
             wrongDisplay.textContent = "";
         };
-
+        showBestTime();
         removeStartListener();
         startBtn.style.display = "block";
         startBtn.innerHTML = "Wygrana!";
-        console.log(player.totalError);
-        // tutaj trzeba:
-        // dodać imię gracza
-        // stworzyć nową pozycję listy wygranych
-        // dodać imię do listy wygranych
-        // dodać totalTime
-        // dodać totalError
-        // posortować
-        // ponumerować
-        // wyświetlić
 
         totalTimeDisplay(player.totalTime);
 
@@ -310,6 +304,15 @@ function checkSecondLevel() {
     }
 }
 
+function showBestTime() {
+    winnerList.removeChild(winnerList.childNodes[0]);
+    var listItem = document.createElement('LI');
+    var bestTime = Math.min.apply(Math, timeRecords);
+    var date = new Date();
+    listItem.textContent = 'Tw\xF3j najlepszy czas: ' + countTime(bestTime);
+    winnerList.appendChild(listItem);
+}
+
 function timer(seconds) {
     var now = Date.now();
     var finish = now + seconds * 1000;
@@ -337,6 +340,7 @@ function setNewTime() {
         return button.textContent = "";
     });
     player.score = '';
+    player.totalError = '';
     wrongDisplay.textContent = "";
     removeStartListener();
     startBtn.innerHTML = "Zagraj jeszcze raz";
@@ -354,32 +358,33 @@ function secondLevelOnceMore() {
         return button.textContent = "";
     });
     player.score = 10;
+    player.totalError = '';
     wrongDisplay.textContent = "";
-    removeStartListener();
     startBtn.innerHTML = "Zagraj jeszcze raz";
     startBtn.style.display = "block";
+    removeStartListener();
     startBtn.addEventListener('click', secondLevelStart);
 }
 
-function displayTimer(seconds) {
+function countTime(seconds) {
     var minutes = Math.floor(seconds / 60);
     var restSeconds = seconds % 60;
     var timerDisplay = minutes + ':' + (restSeconds < 10 ? '0' : '') + restSeconds;
+    return timerDisplay;
+}
 
-    timeToFinish.textContent = timerDisplay;
+function displayTimer(seconds) {
+    timeToFinish.textContent = countTime(seconds);
 }
 
 function totalTimeDisplay(seconds) {
-    var minutes = Math.floor(seconds / 60);
-    var restSeconds = seconds % 60;
-    var timerDisplay = minutes + ':' + (restSeconds < 10 ? '0' : '') + restSeconds;
-
-    wrongDisplay.textContent = 'Tw\xF3j czas: ' + timerDisplay;
+    wrongDisplay.textContent = 'Tw\xF3j czas: ' + countTime(seconds);
 }
 
 function removeStartListener() {
     startBtn.removeEventListener('click', newGame);
     startBtn.removeEventListener('click', secondLevelStart);
+    startBtn.removeEventListener('click', secondLevelOnceMore);
 }
 
 function playerName() {
